@@ -1,0 +1,20 @@
+.page-content {
+    width: 60%;
+    margin: 40px auto;
+}
+
+
+
+.welcome-card-wide.mdl-card {
+  width: 512px;
+}
+
+.welcome-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('../img/ql-welcome.png') center / cover;
+}
+
+.welcome-card-wide > .mdl-card__menu {
+  color: #fff;
+}
