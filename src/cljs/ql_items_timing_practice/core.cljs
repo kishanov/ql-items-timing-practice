@@ -1,6 +1,6 @@
 (ns ql-items-timing-practice.core
   (:require [reagent.core :as reagent]
-            [cljsjs.material]
+            [cljsjs.bootstrap]
             [re-frame.core :as re-frame]
             [ql-items-timing-practice.handlers]
             [ql-items-timing-practice.subs]

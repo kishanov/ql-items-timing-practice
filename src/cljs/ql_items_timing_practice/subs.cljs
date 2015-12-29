@@ -8,3 +8,30 @@
   :active-panel
   (fn [db]
     (reaction (:active-panel @db))))
+
+
+
+(re-frame/register-sub
+  :questions-count
+  (fn [db]
+    (reaction (:questions-count @db))))
+
+
+
+(re-frame/register-sub
+  :current-training
+  (fn [db]
+    (reaction (:current-training @db))))
+
+
+
+(re-frame/register-sub
+  :current-question
+  (fn [db]
+    (reaction (first (get-in @db [:current-training :questions])))))
+
+
+(re-frame/register-sub
+  :current-answer
+  (fn [db]
+    (reaction (first (get-in @db [:current-training :answers])))))

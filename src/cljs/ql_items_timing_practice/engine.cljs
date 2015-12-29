@@ -11,15 +11,15 @@
   {:ra {:label "Red Armor"}
    :ya {:label "Yellow Armor"}
    :ga {:label "Green Armor"}
-   :sh {:label "Shards"}})
+   :sa {:label "Shards"}})
 
 
 
 (def health-bubbles
   {:mh {:label "Mega Health"}
-   :50 {:label "50 health Bubble"}
-   :25 {:label "25 Health Bubble"}
-   :5  {:label "5 Health Bubble"}})
+   :rh {:label "50 health Bubble"}
+   :yh {:label "25 Health Bubble"}
+   :gh {:label "5 Health Bubble"}})
 
 
 
@@ -64,3 +64,12 @@
 
 
 (def next-time (partial next-time-pure items-map pick-up-intervals))
+
+
+
+(defn- random-item-pickup [items-map]
+  {:item (rand-nth (keys items-map))
+   :time (rand-int 60)})
+
+
+(def new-random-item (partial random-item-pickup items-map))

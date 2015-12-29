@@ -2,7 +2,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
                  [org.clojure/core.async "0.2.374"]
-                 [cljsjs/material "1.0.6-0"]
+                 [cljsjs/bootstrap "3.3.6-0"]
                  [reagent "0.5.1"]
                  [re-frame "0.6.0"]]
 
