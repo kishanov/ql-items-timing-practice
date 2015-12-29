@@ -1,5 +1,6 @@
 .container {
     max-width: 730px;
+    padding-bottom: 40px;
 }
 
 
@@ -48,4 +49,12 @@
 
 .statistics .answer {
     width: 2em;
+}
+
+.correct {
+    color: green !important;
+}
+
+.wrong {
+    color: red !important;
 }

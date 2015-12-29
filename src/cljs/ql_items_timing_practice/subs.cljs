@@ -26,6 +26,17 @@
 
 
 (re-frame/register-sub
+  :results
+  (fn [db]
+    (reaction
+      (let [{:keys [questions answers]} (:current-training @db)]
+        (->> (interleave (reverse questions) (reverse answers))
+             (partition 2)
+             (map #(apply merge %)))))))
+
+
+
+(re-frame/register-sub
   :current-question
   (fn [db]
     (reaction (merge

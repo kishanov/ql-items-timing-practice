@@ -43,19 +43,22 @@
 
 
 (defn- add-question [db]
-  (let [question (engine/new-random-item)
-        answer {:correct (engine/next-time (:item question) (:time question))
-                :input   ""}]
+  (stop-timer db)
 
-    (stop-timer db)
+  (if (= (count (get-in db [:current-training :questions])) (:questions-count db))
+    (assoc db :active-panel :results)
+    (let [question (engine/new-random-item)
+          answer {:correct (engine/next-time (:item question) (:time question))
+                  :input   ""}]
 
-    (-> db
-        (update-in [:current-training :questions] conj question)
-        (update-in [:current-training :answers] conj answer)
-        (assoc-in [:current-training :current-question]
-                  {:state      :in-progress
-                   :ticks-left 4
-                   :timer      (js/setInterval #(re-frame/dispatch [:tick]) 1000)}))))
+      (-> db
+          (update-in [:current-training :questions] conj question)
+          (update-in [:current-training :answers] conj answer)
+          (assoc-in [:current-training :current-question]
+                    {:state      :in-progress
+                     :ticks-left 4
+                     :timer      (js/setInterval #(re-frame/dispatch [:tick]) 1000)})))))
+
 
 
 (re-frame/register-handler

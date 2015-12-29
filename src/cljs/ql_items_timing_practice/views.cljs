@@ -3,26 +3,34 @@
             [reagent.core :as reagent]))
 
 
+(defn- start-training-handler [e]
+  (do
+    (.preventDefault e)
+    (re-frame/dispatch [:init-training])
+    (re-frame/dispatch [:add-new-question])
+    (re-frame/dispatch [:set-active-panel :trainer])))
+
+
+
+(defn- img-path [item-key]
+  (str "img/icons/" (name item-key) ".png"))
+
+
 
 (defn welcome-panel []
   (fn []
     [:div.jumbotron
      [:h1
-      "Trainer Info"]
+      "About"]
      [:p.lead
       "You'll be given 20 questions, each question will consist of Quake Live item (like Read Armor or Mega Health)
       and a pick-up time for this item, in seconds. Your goal is to type next spawn time for this item within 5 seconds for each question.
       At the end you'll see a summary of correct/incorrect answers."
       [:p
-       [:a.btn.btn-lg.btn-success
-        {:class    "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-         :href     "#"
+       [:a.btn.btn-lg.btn-primary
+        {:href     "#"
          :role     "button"
-         :on-click #(do
-                     (.preventDefault %)
-                     (re-frame/dispatch [:init-training])
-                     (re-frame/dispatch [:add-new-question])
-                     (re-frame/dispatch [:set-active-panel :trainer]))}
+         :on-click start-training-handler}
         "Start practice"]]]]))
 
 
@@ -55,10 +63,9 @@
           [:div.row
            [:div.col-xs-10.col-xs-offset-1
             [:div.col-xs-4
-             (let [img-filename (str (name (:item @current-question)) ".png")]
-               [:img.thumbnail
-                {:src   (str "img/icons/" img-filename)
-                 :width "128px"}])]
+             [:img.thumbnail
+              {:src   (img-path (:item @current-question))
+               :width "128px"}]]
 
             [:div.col-xs-8
              [:div.row
@@ -93,6 +100,50 @@
              [:small.text-muted "Question " (:number @current-question) " out of " (:total @current-question)]]]]])})))
 
 
+
+(defn results-panel []
+  (let [results (re-frame/subscribe [:results])]
+    (fn []
+      [:div
+       [:table.table
+        [:thead
+         [:tr
+          [:th "Question #"]
+          [:th "Item"]
+          [:th "Pick Up"]
+          [:th "Spawn"]
+          [:th "Your answer"]]]
+
+        [:tbody
+         (doall
+           (for [[i result] (map-indexed vector @results)]
+             (let [correct? (= (:correct result) (:input result))]
+               ^{:key i}
+               [:tr {:class (if correct? "success" "danger")}
+                [:td.text-center (inc i)]
+                [:td
+                 [:img {:src (img-path (:item result))}]]
+                [:td
+                 [:div.statistics
+                  [:div.value (:time result)]]]
+                [:td
+                 [:div.statistics
+                  [:div.value.correct
+                   (:correct result)]]]
+                [:td
+                 [:div.statistics
+                  [:div.value {:class (if correct? "correct" "wrong")}
+                   (:input result)]]]])))]]
+
+       [:hr]
+
+       [:a.btn.btn-lg.btn-primary
+        {:href     "#"
+         :role     "button"
+         :on-click start-training-handler}
+        "Start over"]])))
+
+
 (defn page-not-found []
   [:div 404])
 
@@ -101,6 +152,7 @@
 (defmulti panels identity)
 (defmethod panels :welcome [] [welcome-panel])
 (defmethod panels :trainer [] [trainer-panel])
+(defmethod panels :results [] [results-panel])
 (defmethod panels :default [] [:div])
 
 
@@ -111,14 +163,9 @@
     (fn []
       [:div.container
        [:div.header.clearfix
-        [:h3 {:style {:color "crimson"}}
+        [:h3 {:style {:color "#1B1C1D"}}
          "Quake Live Items Timing Trainer"]]
 
        [:hr]
 
-       (panels @active-panel)
-
-       ;[:footer.footer
-       ; [:p
-       ;  "© 2015 Company, Inc."]]
-       ])))
+       (panels @active-panel)])))

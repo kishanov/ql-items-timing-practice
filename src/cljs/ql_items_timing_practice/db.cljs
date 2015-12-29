@@ -4,5 +4,4 @@
 
 (def default-db
   {:active-panel    :welcome
-   :questions-count 20
-   })
+   :questions-count 10})

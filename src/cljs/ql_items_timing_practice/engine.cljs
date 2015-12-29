@@ -10,7 +10,7 @@
 (def armors
   {:ra {:label "Red Armor"}
    :ya {:label "Yellow Armor"}
-   ;:ga {:label "Green Armor"}
+   :ga {:label "Green Armor"}
    ;:sa {:label "Shards"}
    })
 
