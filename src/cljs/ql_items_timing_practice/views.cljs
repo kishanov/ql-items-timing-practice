@@ -46,39 +46,47 @@
     (reagent/create-class
       {:component-function
        (fn []
-         [:div.row
+         [:div
           {:on-key-down #(when (= 13 (.-keyCode %))
                           (if (= :submitted (:state @current-question-state))
                             (re-frame/dispatch [:add-new-question])
                             (re-frame/dispatch [:submit-answer])))}
-          [:div.col-xs-10.col-xs-offset-1
-           [:div.col-xs-4
-            (let [img-filename (str (name (:item @current-question)) ".png")]
-              [:img.thumbnail
-               {:src   (str "img/icons/" img-filename)
-                :width "128px"}])]
 
-           [:div.col-xs-8
+          [:div.row
+           [:div.col-xs-10.col-xs-offset-1
+            [:div.col-xs-4
+             (let [img-filename (str (name (:item @current-question)) ".png")]
+               [:img.thumbnail
+                {:src   (str "img/icons/" img-filename)
+                 :width "128px"}])]
+
+            [:div.col-xs-8
+             [:div.row
+              [:div.col-xs-12
+               [:div.col-xs-6
+                [:div.statistics.text-center
+                 [:div.value.given-value (:time @current-question)]
+                 [:div.label "Pick Up"]]]
+
+               [:div.col-xs-6
+                [:div.statistics.text-center
+                 [:div.value [answer-input]]
+                 [:div.label "Next Spawn"]]]]]
+
+             (when (= :submitted (:state @current-question-state))
+               [:div.row {:style {:margin-top "20px"}}
+                (if (= (:correct @current-question-state) (:input @current-question-state))
+                  [:div.alert.alert-success "Correct!"]
+                  [:div.alert.alert-danger "Wrong! Correct spawn time is "
+                   [:span.statistics
+                    [:span.value {:style {:color "#a94442"}}
+                     (:correct @current-question-state)]]])])]]]
+
+          (when-not (= :submitted (:state @current-question-state))
             [:div.row
-             [:div.col-xs-12
-              [:div.col-xs-6
-               [:div.statistics.text-center
-                [:div.value.given-value (:time @current-question)]
-                [:div.label "Pick Up"]]]
-
-              [:div.col-xs-6
-               [:div.statistics.text-center
-                [:div.value [answer-input]]
-                [:div.label "Next Spawn"]]]]]
-
-            (when (= :submitted (:state @current-question-state))
-              [:div.row {:style {:margin-top "20px"}}
-               (if (= (:correct @current-question-state) (:input @current-question-state))
-                 [:div.alert.alert-success "Correct!"]
-                 [:div.alert.alert-danger "Wrong! Correct spawn time is "
-                  [:span.statistics
-                   [:span.value {:style {:color "#a94442"}}
-                    (:correct @current-question-state)]]])])]]])})))
+             [:div.col-xs-6.col-xs-offset-3
+              [:div.text-center
+               [:h2 "Answer in " (inc (:ticks-left @current-question-state)) " seconds..."]]]])])})))
 
 
 (defn page-not-found []
