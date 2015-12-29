@@ -31,7 +31,15 @@
     (reaction (first (get-in @db [:current-training :questions])))))
 
 
+
 (re-frame/register-sub
   :current-answer
   (fn [db]
     (reaction (first (get-in @db [:current-training :answers])))))
+
+
+
+(re-frame/register-sub
+  :current-question-state
+  (fn [db]
+    (reaction (get-in @db [:current-training :current-question]))))

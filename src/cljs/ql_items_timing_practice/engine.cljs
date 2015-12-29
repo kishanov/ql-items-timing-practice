@@ -10,16 +10,18 @@
 (def armors
   {:ra {:label "Red Armor"}
    :ya {:label "Yellow Armor"}
-   :ga {:label "Green Armor"}
-   :sa {:label "Shards"}})
+   ;:ga {:label "Green Armor"}
+   ;:sa {:label "Shards"}
+   })
 
 
 
 (def health-bubbles
   {:mh {:label "Mega Health"}
    :rh {:label "50 health Bubble"}
-   :yh {:label "25 Health Bubble"}
-   :gh {:label "5 Health Bubble"}})
+   ;:yh {:label "25 Health Bubble"}
+   ;:gh {:label "5 Health Bubble"}
+   })
 
 
 
