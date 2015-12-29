@@ -28,7 +28,10 @@
 (re-frame/register-sub
   :current-question
   (fn [db]
-    (reaction (first (get-in @db [:current-training :questions])))))
+    (reaction (merge
+                (first (get-in @db [:current-training :questions]))
+                {:number (count (get-in @db [:current-training :questions]))
+                 :total  (:questions-count @db)}))))
 
 
 

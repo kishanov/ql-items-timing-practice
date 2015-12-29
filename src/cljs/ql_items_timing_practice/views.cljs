@@ -10,9 +10,9 @@
      [:h1
       "Trainer Info"]
      [:p.lead
-      "This trainer will give you 20 questions, each will include random item and pick-up time.
-       Your goal is to type a correct time of next spawn of the same item quickly.
-       At the end, trainer will give you statistics of correct/incorrect answers."
+      "You'll be given 20 questions, each question will consist of Quake Live item (like Read Armor or Mega Health)
+      and a pick-up time for this item, in seconds. Your goal is to type next spawn time for this item within 5 seconds for each question.
+      At the end you'll see a summary of correct/incorrect answers."
       [:p
        [:a.btn.btn-lg.btn-success
         {:class    "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -82,11 +82,15 @@
                     [:span.value {:style {:color "#a94442"}}
                      (:correct @current-question-state)]]])])]]]
 
-          (when-not (= :submitted (:state @current-question-state))
-            [:div.row
-             [:div.col-xs-6.col-xs-offset-3
-              [:div.text-center
-               [:h2 "Answer in " (inc (:ticks-left @current-question-state)) " seconds..."]]]])])})))
+          [:div.row
+           [:div.col-xs-6.col-xs-offset-3
+            [:div.text-center
+             (if (= :submitted (:state @current-question-state))
+               [:span.text-muted "Press Enter to continue..."]
+               [:h2.text-muted "Answer in " (inc (:ticks-left @current-question-state)) " seconds..."])
+
+             [:hr]
+             [:small.text-muted "Question " (:number @current-question) " out of " (:total @current-question)]]]]])})))
 
 
 (defn page-not-found []
@@ -107,7 +111,7 @@
     (fn []
       [:div.container
        [:div.header.clearfix
-        [:h3.text-muted
+        [:h3 {:style {:color "crimson"}}
          "Quake Live Items Timing Trainer"]]
 
        [:hr]
